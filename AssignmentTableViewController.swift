@@ -46,7 +46,6 @@ class AssignmentTableViewController: UITableViewController {
     var dateMinWidth: CGFloat = 0.0
 
     override func viewDidLoad() {
-        self.navigationController?.navigationBar.prefersLargeTitles = true
         
         fmt.dateFormat = "M/d/yyyy"
 

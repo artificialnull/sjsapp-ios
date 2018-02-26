@@ -11,12 +11,16 @@ import UIKit
 class DetailViewController: UIViewController {
     @IBOutlet weak var shortLabel: UILabel!
     @IBOutlet weak var longLabel: UILabel!
+    @IBOutlet weak var classLabel: UILabel!
+    @IBOutlet weak var assignedLabel: UILabel!
+    @IBOutlet weak var dueLabel: UILabel!
     
     var assignment: Assignment?
+    let fmt = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        fmt.dateFormat = "M/d/yyyy HH:mm"
         self.navigationItem.title = "Details"
         // Do any additional setup after loading the view.
     }
@@ -30,6 +34,9 @@ class DetailViewController: UIViewController {
         super.viewWillAppear(animated)
         shortLabel.text = assignment?.assignmentShort.htmlToString
         longLabel.text = assignment?.assignmentLong?.htmlToString
+        classLabel.text = assignment?.assignmentClass
+        assignedLabel.text = fmt.string(from: (assignment?.assignmentAssigned)!)
+        dueLabel.text = fmt.string(from: (assignment?.assignmentDue)!)
     }
     
 

@@ -25,7 +25,6 @@ class ScheduleTableViewController: UITableViewController {
     @IBOutlet weak var titleBackwardButton: UIBarButtonItem!
     
     override func viewDidLoad() {
-        self.navigationController?.navigationBar.prefersLargeTitles = true
         
         fmt.dateFormat = "HH:mm"
 
