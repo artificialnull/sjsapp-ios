@@ -14,6 +14,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var classLabel: UILabel!
     @IBOutlet weak var assignedLabel: UILabel!
     @IBOutlet weak var dueLabel: UILabel!
+    @IBOutlet weak var statusButton: UISegmentedControl!
     
     var assignment: Assignment?
     let fmt = DateFormatter()
@@ -37,6 +38,19 @@ class DetailViewController: UIViewController {
         classLabel.text = assignment?.assignmentClass
         assignedLabel.text = fmt.string(from: (assignment?.assignmentAssigned)!)
         dueLabel.text = fmt.string(from: (assignment?.assignmentDue)!)
+        
+        (statusButton.subviews[2] as UIView).tintColor = Assignment.toDoColor
+        (statusButton.subviews[1] as UIView).tintColor = Assignment.inProgressColor
+        (statusButton.subviews[0] as UIView).tintColor = Assignment.completedColor
+        
+        statusButton.selectedSegmentIndex = (assignment?.assignmentStatus.statusCode)! + 1
+        
+        statusButton.addTarget(self, action: #selector(DetailViewController.statusChanged(_:)), for: .valueChanged)
+    }
+    
+    @objc func statusChanged(_ segControl: UISegmentedControl) {
+        assignment?.assignmentStatus = Assignment().statusFromInt(status: segControl.selectedSegmentIndex - 1)
+        Browser().updateAssignmentStatus(assignment: assignment!)
     }
     
 
