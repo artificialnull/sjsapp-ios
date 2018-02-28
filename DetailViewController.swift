@@ -23,6 +23,16 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         fmt.dateFormat = "M/d/yyyy HH:mm"
         self.navigationItem.title = "Details"
+        if assignment?.assignmentStatus.statusCode != Assignment.Graded.statusCode {
+            (statusButton.subviews[2]).tintColor = Assignment.toDoColor
+            (statusButton.subviews[1]).tintColor = Assignment.inProgressColor
+            (statusButton.subviews[0]).tintColor = Assignment.completedColor
+        } else {
+            statusButton.removeAllSegments()
+            statusButton.insertSegment(withTitle: "Graded", at: 0, animated: true)
+            statusButton.subviews[0].tintColor = Assignment.gradedColor
+            statusButton.selectedSegmentIndex = 0
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -39,9 +49,7 @@ class DetailViewController: UIViewController {
         assignedLabel.text = fmt.string(from: (assignment?.assignmentAssigned)!)
         dueLabel.text = fmt.string(from: (assignment?.assignmentDue)!)
         
-        (statusButton.subviews[2] as UIView).tintColor = Assignment.toDoColor
-        (statusButton.subviews[1] as UIView).tintColor = Assignment.inProgressColor
-        (statusButton.subviews[0] as UIView).tintColor = Assignment.completedColor
+        
         
         statusButton.selectedSegmentIndex = (assignment?.assignmentStatus.statusCode)! + 1
         

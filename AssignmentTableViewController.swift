@@ -243,8 +243,11 @@ class AssignmentTableViewController: UITableViewController {
 
         }
         completedAction.backgroundColor = Assignment.completedColor
-        
-        return [completedAction, inProgressAction, toDoAction]
+        if assignment.assignmentStatus.statusCode != Assignment.Graded.statusCode {
+            return [completedAction, inProgressAction, toDoAction]
+        } else {
+            return []
+        }
     }
 
     /*
