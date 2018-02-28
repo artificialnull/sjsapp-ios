@@ -317,12 +317,24 @@
                                     <segment title="Completed"/>
                                 </segments>
                             </segmentedControl>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fIB-aU-BzK">
-                                <rect key="frame" x="16" y="232" width="343" height="18"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ow1-gz-S2S">
+                                <rect key="frame" x="0.0" y="232" width="375" height="386"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailExtraCell" id="iyv-86-gxq">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iyv-86-gxq" id="NKO-8z-Oge">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="LaE-EB-EXp" id="4DE-Z9-V5H"/>
+                                    <outlet property="delegate" destination="LaE-EB-EXp" id="TR3-hx-KfZ"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -331,32 +343,34 @@
                             <constraint firstItem="UXv-vW-yRk" firstAttribute="leading" secondItem="pfg-EA-7rO" secondAttribute="leading" constant="16" id="7lO-Ib-6ah"/>
                             <constraint firstItem="pfg-EA-7rO" firstAttribute="trailing" secondItem="ebg-jU-3Qo" secondAttribute="trailing" constant="16" id="9bs-Du-L7w"/>
                             <constraint firstItem="hhk-dW-bqU" firstAttribute="top" secondItem="UXv-vW-yRk" secondAttribute="top" id="DVx-Dp-WCF"/>
+                            <constraint firstItem="Ow1-gz-S2S" firstAttribute="bottom" secondItem="pfg-EA-7rO" secondAttribute="bottom" id="GdO-IS-5sT"/>
                             <constraint firstItem="gNa-tW-yZx" firstAttribute="top" secondItem="ZnJ-30-KOW" secondAttribute="top" id="Giz-Fz-3jH"/>
                             <constraint firstItem="ebg-jU-3Qo" firstAttribute="top" secondItem="Ehx-zu-bXk" secondAttribute="top" id="Mw4-uq-bqt"/>
                             <constraint firstItem="pfg-EA-7rO" firstAttribute="trailing" secondItem="hhk-dW-bqU" secondAttribute="trailing" constant="16" id="Pp8-OM-kK8"/>
-                            <constraint firstItem="fIB-aU-BzK" firstAttribute="leading" secondItem="pfg-EA-7rO" secondAttribute="leading" constant="16" id="RGf-yj-ul5"/>
+                            <constraint firstItem="Ow1-gz-S2S" firstAttribute="trailing" secondItem="pfg-EA-7rO" secondAttribute="trailing" id="QCI-MD-baP"/>
                             <constraint firstItem="fs3-xV-jLs" firstAttribute="top" secondItem="ZnJ-30-KOW" secondAttribute="bottom" constant="8" id="Uwf-f0-PeF"/>
-                            <constraint firstItem="pfg-EA-7rO" firstAttribute="trailing" secondItem="fIB-aU-BzK" secondAttribute="trailing" constant="16" id="bLn-bD-G1y"/>
                             <constraint firstItem="ZnJ-30-KOW" firstAttribute="leading" secondItem="pfg-EA-7rO" secondAttribute="leading" constant="16" id="c6P-9g-buk"/>
+                            <constraint firstItem="Ow1-gz-S2S" firstAttribute="leading" secondItem="pfg-EA-7rO" secondAttribute="leading" id="d11-zq-3bh"/>
                             <constraint firstItem="Ehx-zu-bXk" firstAttribute="top" secondItem="up4-Gl-Bdw" secondAttribute="bottom" constant="8" id="dqq-dJ-DfG"/>
                             <constraint firstItem="UXv-vW-yRk" firstAttribute="top" secondItem="Ehx-zu-bXk" secondAttribute="bottom" constant="8" id="h93-dt-plE"/>
+                            <constraint firstItem="Ow1-gz-S2S" firstAttribute="top" secondItem="fs3-xV-jLs" secondAttribute="bottom" constant="8" id="jD7-0J-7rE"/>
                             <constraint firstItem="pfg-EA-7rO" firstAttribute="trailing" secondItem="up4-Gl-Bdw" secondAttribute="trailing" constant="16" id="jj5-r4-lCn"/>
                             <constraint firstItem="pfg-EA-7rO" firstAttribute="trailing" secondItem="gNa-tW-yZx" secondAttribute="trailing" constant="16" id="nS9-pm-QSc"/>
                             <constraint firstItem="ZnJ-30-KOW" firstAttribute="top" secondItem="UXv-vW-yRk" secondAttribute="bottom" constant="8" id="nu4-UY-EBg"/>
                             <constraint firstItem="Ehx-zu-bXk" firstAttribute="leading" secondItem="pfg-EA-7rO" secondAttribute="leading" constant="16" id="qnJ-SH-fcl"/>
                             <constraint firstItem="fs3-xV-jLs" firstAttribute="leading" secondItem="pfg-EA-7rO" secondAttribute="leading" constant="16" id="urF-Yg-6tc"/>
                             <constraint firstItem="up4-Gl-Bdw" firstAttribute="leading" secondItem="pfg-EA-7rO" secondAttribute="leading" constant="16" id="wZH-7G-hLk"/>
-                            <constraint firstItem="fIB-aU-BzK" firstAttribute="top" secondItem="fs3-xV-jLs" secondAttribute="bottom" constant="8" id="wbr-E3-h8J"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pfg-EA-7rO"/>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="assignedLabel" destination="hhk-dW-bqU" id="csd-12-RpU"/>
                         <outlet property="classLabel" destination="ebg-jU-3Qo" id="cxy-gF-ebt"/>
                         <outlet property="dueLabel" destination="gNa-tW-yZx" id="wxm-YX-dGz"/>
-                        <outlet property="longLabel" destination="fIB-aU-BzK" id="6ol-wp-kau"/>
                         <outlet property="shortLabel" destination="up4-Gl-Bdw" id="i1w-rJ-Szo"/>
                         <outlet property="statusButton" destination="fs3-xV-jLs" id="FK4-zk-kYd"/>
+                        <outlet property="tableView" destination="Ow1-gz-S2S" id="a27-mN-S9u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cHr-lb-K3u" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -29,6 +29,29 @@ class Assignment {
         }
     }
     
+    class Link {
+        var extraUrl = ""
+        var extraTitle = ""
+        
+        init(url: String, title: String) {
+            extraUrl = url
+            extraTitle = title
+        }
+        
+        init() {}
+    }
+    
+    class Download: Link {
+        override init(url: String, title: String) {
+            super.init()
+            extraUrl = "https://sjs.myschoolapp.com" + url
+            extraTitle = title
+        }
+    }
+    
+    var assignmentDownloads = [Download]()
+    var assignmentLinks = [Link]()
+    
     static var ToDo = AssignmentStatus(sstr: "To Do", scode: -1, scolor: toDoColor)
     static var InProgress = AssignmentStatus(sstr: "In Progress", scode: 0, scolor: inProgressColor)
     static var Completed = AssignmentStatus(sstr: "Completed", scode: 1, scolor: completedColor)

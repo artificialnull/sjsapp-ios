@@ -8,13 +8,14 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var shortLabel: UILabel!
-    @IBOutlet weak var longLabel: UILabel!
     @IBOutlet weak var classLabel: UILabel!
     @IBOutlet weak var assignedLabel: UILabel!
     @IBOutlet weak var dueLabel: UILabel!
     @IBOutlet weak var statusButton: UISegmentedControl!
+    @IBOutlet weak var tableView: UITableView!
+    
     
     var assignment: Assignment?
     let fmt = DateFormatter()
@@ -43,17 +44,22 @@ class DetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        shortLabel.text = assignment?.assignmentShort.htmlToString
-        longLabel.text = assignment?.assignmentLong?.htmlToString
-        classLabel.text = assignment?.assignmentClass
-        assignedLabel.text = fmt.string(from: (assignment?.assignmentAssigned)!)
-        dueLabel.text = fmt.string(from: (assignment?.assignmentDue)!)
+        self.shortLabel.text = assignment?.assignmentShort.htmlToString
+        self.classLabel.text = assignment?.assignmentClass
+        self.assignedLabel.text = self.fmt.string(from: (assignment!.assignmentAssigned))
+        self.dueLabel.text = self.fmt.string(from: (assignment!.assignmentDue))
         
+        self.statusButton.selectedSegmentIndex = (assignment?.assignmentStatus.statusCode)! + 1
         
+        self.statusButton.addTarget(self, action: #selector(DetailViewController.statusChanged(_:)), for: .valueChanged)
+        Browser().getFullAssignment(assignment: assignment!) { response in
+            print(response?.assignmentDownloads.count as Any)
+            print(response?.assignmentLinks.count as Any)
+            self.assignment = response
+            print(self.tableView.bounds.height)
+            self.tableView.reloadData()
+        }
         
-        statusButton.selectedSegmentIndex = (assignment?.assignmentStatus.statusCode)! + 1
-        
-        statusButton.addTarget(self, action: #selector(DetailViewController.statusChanged(_:)), for: .valueChanged)
     }
     
     @objc func statusChanged(_ segControl: UISegmentedControl) {
@@ -61,6 +67,75 @@ class DetailViewController: UIViewController {
         Browser().updateAssignmentStatus(assignment: assignment!)
     }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("YAZAAZ")
+        let cellIdentifier = "DetailExtraCell"
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: cellIdentifier, for: indexPath)
+        cell.textLabel?.font = cell.textLabel?.font.withSize(13.0)
+
+        switch indexPath.section {
+        case 2:
+            //todo
+            print("LANKS")
+            cell.textLabel?.text = assignment?.assignmentLinks[indexPath.row].extraTitle
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+        case 1:
+            print("donjons")
+            cell.textLabel?.text = assignment?.assignmentDownloads[indexPath.row].extraTitle
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            //todo
+        case 0:
+            print("informing")
+            cell.textLabel?.text = assignment?.assignmentLong?.htmlToString
+            cell.textLabel?.numberOfLines = 0
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+        default:
+            return cell
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Info"
+        case 1:
+            print("we're in")
+            return "Downloads"
+        case 2:
+            return "Links"
+        default:
+            return ""
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("bois")
+        switch section {
+        case 2:
+            print("meems")
+            print(assignment?.assignmentLinks.count)
+            return (assignment?.assignmentLinks.count)!
+        case 1:
+            print("not meeming")
+            print((assignment?.assignmentDownloads.count)!)
+            return (assignment?.assignmentDownloads.count)!
+        case 0:
+            if assignment?.assignmentLong?.count != 0 && !(assignment?.assignmentLong ?? "").isEmpty {
+                return 1
+            } else {
+                return 0
+            }
+        default:
+            return 0
+        }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        print("le")
+        return 3
+    }
 
     /*
     // MARK: - Navigation

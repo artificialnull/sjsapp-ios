@@ -123,4 +123,36 @@ class Browser {
         }
     }
     
+    func getFullAssignment(assignment: Assignment, handler: @escaping ((Assignment?) -> ())) {
+        logIn() { _ in
+            Alamofire.request(
+                "https://sjs.myschoolapp.com/api/assignment2/read/\(assignment.assignmentID)/?format=json"
+                ).responseJSON { response in
+                    let json = JSON(response.result.value as Any)
+                    var links = [Assignment.Link]()
+                    var dnlds = [Assignment.Download]()
+                    let linkJSON = json["LinkItems"].array
+                    
+                    for link in linkJSON! {
+                        links.append(
+                            Assignment.Link(url: link["Url"].string!,
+                                            title: link["ShortDescription"].string!)
+                        )
+                    }
+                    
+                    let dnldJSON = json["DownloadItems"].array
+                    
+                    for dnld in dnldJSON! {
+                        dnlds.append(
+                            Assignment.Download(url: dnld["DownloadUrl"].string!,
+                                                title: dnld["ShortDescription"].string!)
+                        )
+                    }
+                    assignment.assignmentLinks = links
+                    assignment.assignmentDownloads = dnlds
+                    handler(assignment)
+            }
+        }
+    }
+    
 }
