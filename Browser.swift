@@ -155,4 +155,13 @@ class Browser {
         }
     }
     
+    func downloadFile(download: Assignment.Download, handler: @escaping ((DownloadResponse<Data>?) -> ())) {
+        let destination = DownloadRequest
+            .suggestedDownloadDestination(for: .documentDirectory)
+        print(destination)
+        Alamofire.download(download.extraUrl, to: destination).responseData {
+            response in handler(response)}
+
+    }
+    
 }

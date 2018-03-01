@@ -71,29 +71,31 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         print("YAZAAZ")
         let cellIdentifier = "DetailExtraCell"
         let cell = tableView.dequeueReusableCell(
-            withIdentifier: cellIdentifier, for: indexPath)
-        cell.textLabel?.font = cell.textLabel?.font.withSize(13.0)
-
+            withIdentifier: cellIdentifier, for: indexPath) as? ExtraTableViewCell
+        cell?.textLabel?.font = cell?.textLabel?.font.withSize(13.0)
+        
         switch indexPath.section {
         case 2:
             //todo
             print("LANKS")
-            cell.textLabel?.text = assignment?.assignmentLinks[indexPath.row].extraTitle
-            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell?.extraLink = assignment?.assignmentLinks[indexPath.row].extraUrl
+            cell?.textLabel?.text = assignment?.assignmentLinks[indexPath.row].extraTitle
+            cell?.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         case 1:
             print("donjons")
-            cell.textLabel?.text = assignment?.assignmentDownloads[indexPath.row].extraTitle
-            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell?.extraLink = assignment?.assignmentDownloads[indexPath.row].extraUrl
+            cell?.textLabel?.text = assignment?.assignmentDownloads[indexPath.row].extraTitle
+            cell?.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
             //todo
         case 0:
             print("informing")
-            cell.textLabel?.text = assignment?.assignmentLong?.htmlToString
-            cell.textLabel?.numberOfLines = 0
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell?.textLabel?.text = assignment?.assignmentLong?.htmlToString
+            cell?.textLabel?.numberOfLines = 0
+            cell?.selectionStyle = UITableViewCellSelectionStyle.none
         default:
-            return cell
+            return cell!
         }
-        return cell
+        return cell!
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -137,6 +139,27 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return 3
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 1:
+            Browser().downloadFile(
+            download: (assignment?.assignmentDownloads[indexPath.row])!) {
+                response in
+                let evc = self.storyboard!
+                    .instantiateViewController(withIdentifier: "ExtraVC") as! ExtraViewController
+                evc.file = (response?.destinationURL)
+                print(evc.file)
+                self.navigationController?.pushViewController(evc, animated: true)
+            }
+        case 2:
+            let evc = self.storyboard!
+                .instantiateViewController(withIdentifier: "ExtraVC") as! ExtraViewController
+            evc.url = URL(string: (assignment?.assignmentLinks[indexPath.row].extraUrl)!)
+            self.navigationController?.pushViewController(evc, animated: true)
+        default:
+            return
+        }
+    }
     /*
     // MARK: - Navigation
 
@@ -144,7 +167,12 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if let extraVC = segue.destination as? ExtraViewController {
+            extraVC.urlStr = (sender as? ExtraTableViewCell)?.extraLink
+        }
     }
-    */
+ 
+     */
+    
 
 }
