@@ -377,32 +377,46 @@
                         <outlet property="shortLabel" destination="up4-Gl-Bdw" id="i1w-rJ-Szo"/>
                         <outlet property="statusButton" destination="fs3-xV-jLs" id="FK4-zk-kYd"/>
                         <outlet property="tableView" destination="Ow1-gz-S2S" id="a27-mN-S9u"/>
+                        <segue destination="ISY-SG-scZ" kind="show" id="7C5-I8-XHx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cHr-lb-K3u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2360.8000000000002" y="365.66716641679164"/>
+            <point key="canvasLocation" x="2276" y="366"/>
         </scene>
         <!--Extra View Controller-->
         <scene sceneID="n8n-pU-hRE">
             <objects>
                 <viewController storyboardIdentifier="ExtraVC" id="ISY-SG-scZ" customClass="ExtraViewController" customModule="sjsapp" customModuleProvider="target" sceneMemberID="viewController">
-                    <wkWebView key="view" contentMode="scaleToFill" id="lGp-xk-hwO">
+                    <view key="view" contentMode="scaleToFill" id="NJ0-np-1Xz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <wkWebViewConfiguration key="configuration">
-                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                            <wkPreferences key="preferences"/>
-                        </wkWebViewConfiguration>
-                    </wkWebView>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ric-08-5uf">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="hPi-ZR-SOW" firstAttribute="bottom" secondItem="Ric-08-5uf" secondAttribute="bottom" id="Ctc-f0-20g"/>
+                            <constraint firstItem="Ric-08-5uf" firstAttribute="top" secondItem="hPi-ZR-SOW" secondAttribute="top" id="GN5-tI-WnS"/>
+                            <constraint firstItem="Ric-08-5uf" firstAttribute="leading" secondItem="hPi-ZR-SOW" secondAttribute="leading" id="WKA-H9-fqZ"/>
+                            <constraint firstItem="hPi-ZR-SOW" firstAttribute="trailing" secondItem="Ric-08-5uf" secondAttribute="trailing" id="hh1-KS-PnS"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="hPi-ZR-SOW"/>
+                    </view>
                     <connections>
-                        <outlet property="webView" destination="lGp-xk-hwO" id="aQi-0h-jNg"/>
+                        <outlet property="webView" destination="Ric-08-5uf" id="RdP-hB-KGN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DDh-YC-eKA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3201" y="366"/>
+            <point key="canvasLocation" x="3117.5999999999999" y="365.66716641679164"/>
         </scene>
         <!--Schedule-->
         <scene sceneID="yZB-ms-B4H">

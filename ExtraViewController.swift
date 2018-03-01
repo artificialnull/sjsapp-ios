@@ -11,7 +11,8 @@ import WebKit
 import SafariServices
 
 class ExtraViewController: UIViewController, WKUIDelegate {
-    @IBOutlet var webView: WKWebView!
+    @IBOutlet weak var webView: WKWebView!
+    
     
     var url: URL?
     var file: URL?
