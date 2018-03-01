@@ -142,6 +142,14 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
+            let cell = tableView.cellForRow(at: indexPath) as? ExtraTableViewCell
+            cell?.accessoryType = UITableViewCellAccessoryType.none
+            
+            let indicator = UIActivityIndicatorView()
+            indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+            indicator.startAnimating()
+            cell?.accessoryView = indicator
+            
             Browser().downloadFile(
             download: (assignment?.assignmentDownloads[indexPath.row])!) {
                 response in
@@ -150,6 +158,8 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 evc.file = (response?.destinationURL)
                 print(evc.file)
                 evc.name = (self.assignment?.assignmentDownloads[indexPath.row])?.extraTitle
+                cell?.accessoryView = nil
+                cell?.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 self.navigationController?.pushViewController(evc, animated: true)
             }
         case 2:
