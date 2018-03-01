@@ -149,12 +149,14 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     .instantiateViewController(withIdentifier: "ExtraVC") as! ExtraViewController
                 evc.file = (response?.destinationURL)
                 print(evc.file)
+                evc.name = (self.assignment?.assignmentDownloads[indexPath.row])?.extraTitle
                 self.navigationController?.pushViewController(evc, animated: true)
             }
         case 2:
             let evc = self.storyboard!
                 .instantiateViewController(withIdentifier: "ExtraVC") as! ExtraViewController
             evc.url = URL(string: (assignment?.assignmentLinks[indexPath.row].extraUrl)!)
+            evc.name = assignment?.assignmentLinks[indexPath.row].extraTitle
             self.navigationController?.pushViewController(evc, animated: true)
         default:
             return

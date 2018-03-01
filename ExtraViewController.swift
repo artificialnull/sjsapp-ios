@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import SafariServices
 
 class ExtraViewController: UIViewController, WKUIDelegate {
     @IBOutlet var webView: WKWebView!
@@ -15,8 +16,28 @@ class ExtraViewController: UIViewController, WKUIDelegate {
     var url: URL?
     var file: URL?
     
+    var name: String?
+    
+    @objc func openExternally() {
+        print("boi")
+        let toOpen = file ?? url ?? URL(string: "")
+        let svc = SFSafariViewController(url: toOpen!)
+        present(svc, animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.title = name
+        
+        self.navigationItem.rightBarButtonItem =
+            UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.action,
+                            target: self,
+                            action: #selector(ExtraViewController.openExternally))
+        let toOpen = file ?? url ?? URL(string: "")
+        self.navigationItem.rightBarButtonItem?.isEnabled =
+            (toOpen?.scheme == "http" || toOpen?.scheme == "https")
+        
         if file != nil {
             webView.loadFileURL(file!, allowingReadAccessTo: file!)
         } else if url != nil {
