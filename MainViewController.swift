@@ -35,6 +35,7 @@ class MainViewController: UITabBarController {
                 message: nil,
                 preferredStyle: .alert
             )
+            alertController.view.tintColor = UIColor.red
             alertController.addAction(UIAlertAction(
                 title: "OK",
                 style: .default,

@@ -161,7 +161,8 @@ class AssignmentTableViewController: UITableViewController {
         }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
+        alert.view.tintColor = UIColor.red
+
         present(alert, animated: true, completion: nil)
     }
 
