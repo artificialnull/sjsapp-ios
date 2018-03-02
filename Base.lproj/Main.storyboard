@@ -573,15 +573,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GQI-Kq-hs3">
-                                                    <rect key="frame" x="156.5" y="7" width="62" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                    <state key="normal" title="Sign Out"/>
-                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign Out" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xT2-aD-WfW">
+                                                    <rect key="frame" x="153" y="11" width="69" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="GQI-Kq-hs3" firstAttribute="centerX" secondItem="5E2-kE-Msc" secondAttribute="centerX" id="a9v-Qp-0Ql"/>
-                                                <constraint firstItem="GQI-Kq-hs3" firstAttribute="centerY" secondItem="5E2-kE-Msc" secondAttribute="centerY" id="cQ9-QA-4Jy"/>
+                                                <constraint firstItem="xT2-aD-WfW" firstAttribute="centerY" secondItem="5E2-kE-Msc" secondAttribute="centerY" id="6gk-Cq-5IB"/>
+                                                <constraint firstItem="xT2-aD-WfW" firstAttribute="centerX" secondItem="5E2-kE-Msc" secondAttribute="centerX" id="a7P-1D-q8e"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

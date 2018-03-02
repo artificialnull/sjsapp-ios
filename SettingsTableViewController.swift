@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KeychainSwift
 
 class SettingsTableViewController: UITableViewController {
     @IBOutlet weak var timeFormatSwitch: UISwitch!
@@ -58,6 +59,49 @@ class SettingsTableViewController: UITableViewController {
         default:
             return 1
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 && indexPath.row == 0 {
+            let alert = UIAlertController(title: "Sort by", message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Due", style: .default,
+                                          handler: {_ in
+                self.prefs.set("Due", forKey: "assignmentSort")
+                self.sortLabel.text = self.prefs.string(forKey: "assignmentSort")
+            }))
+            alert.addAction(UIAlertAction(title: "Assigned", style: .default,
+                                          handler: {_ in
+                self.prefs.set("Assigned", forKey: "assignmentSort")
+                self.sortLabel.text = self.prefs.string(forKey: "assignmentSort")
+            }))
+            alert.addAction(UIAlertAction(title: "Class", style: .default,
+                                          handler: {_ in
+                self.prefs.set("Class", forKey: "assignmentSort")
+                self.sortLabel.text = self.prefs.string(forKey: "assignmentSort")
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            alert.view.tintColor = UIColor.red
+            
+            present(alert, animated: true, completion: nil)
+            
+        } else if indexPath.section == 2 && indexPath.row == 0 {
+            print("no meems")
+            let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: {_ in
+                let keychain = KeychainSwift()
+                keychain.set("", forKey: "username")
+                keychain.set("", forKey: "password")
+                Browser().clearCredentials()
+                (self.tabBarController as! MainViewController).askForCredentials()
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            alert.view.tintColor = UIColor.red
+
+            present(alert, animated: true, completion: nil)
+
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     /*

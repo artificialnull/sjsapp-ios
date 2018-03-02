@@ -21,6 +21,15 @@ class Browser {
         Browser.pw = password
     }
     
+    func clearCredentials() {
+        Browser.un = ""
+        Browser.pw = ""
+        let cookieStore = HTTPCookieStorage.shared
+        for cookie in cookieStore.cookies ?? [] {
+            cookieStore.deleteCookie(cookie)
+        }
+    }
+    
     func getToken(handler: @escaping ((DataResponse<String>?) -> ())) {
         Alamofire.request("https://sjs.myschoolapp.com").responseString {
             response in
@@ -38,6 +47,8 @@ class Browser {
     func logIn(handler: @escaping ((DataResponse<Any>?) -> ())) {
         if Browser.un != "" && Browser.pw != "" {
             getToken() { _ in
+                print(Browser.un)
+                print(Browser.pw)
                 Alamofire.request(
                     "https://sjs.myschoolapp.com/api/SignIn",
                     method: .post,

@@ -30,6 +30,65 @@ class MainViewController: UITabBarController {
         // Do any additional setup after loading the view.
     }
     
+    func askForCredentials() {
+        let alertController = UIAlertController(
+            title: "Sign In",
+            message: nil,
+            preferredStyle: .alert
+        )
+        alertController.view.tintColor = UIColor.red
+        alertController.addAction(UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: { _ in
+                
+                let un = (alertController.textFields![0] as UITextField).text
+                let pw = (alertController.textFields![1] as UITextField).text
+                
+                if (un?.isEmpty)! || (pw?.isEmpty)! {
+                    self.present(alertController, animated: true, completion: nil)
+                    return
+                }
+                
+                print(un)
+                print(pw)
+                
+                Browser().clearCredentials()
+                
+                Browser().setCredentials(username: un!, password: pw!)
+
+                Browser().checkLogIn() { response in
+                    print("did this work?:")
+                    print(response)
+                    if response {
+                        
+                        print(response)
+                        
+                        let keychain = KeychainSwift()
+
+                        keychain.set(un!, forKey: "username")
+                        keychain.set(pw!, forKey: "password")
+                        
+                        self.refreshSchedule()
+                    } else {
+                        print("NAAZ")
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
+                
+        }
+            )
+        )
+        alertController.addTextField { (textField: UITextField!) -> Void in
+            textField.placeholder = "Username"
+        }
+        alertController.addTextField { (textField: UITextField!) -> Void in
+            textField.placeholder = "Password"
+            textField.isSecureTextEntry = true
+        }
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -41,43 +100,7 @@ class MainViewController: UITabBarController {
         print(username as Any)
         
         if username == nil || password == nil {
-            let alertController = UIAlertController(
-                title: "Sign in",
-                message: nil,
-                preferredStyle: .alert
-            )
-            alertController.view.tintColor = UIColor.red
-            alertController.addAction(UIAlertAction(
-                title: "OK",
-                style: .default,
-                handler: { _ in
-                    
-                    let un = (alertController.textFields![0] as UITextField).text
-                    let pw = (alertController.textFields![1] as UITextField).text
-                    Browser().setCredentials(username: un!, password: pw!)
-                    Browser().checkLogIn() { response in
-                        if response {
-                            keychain.set(un!, forKey: "username")
-                            keychain.set(pw!, forKey: "password")
-                            
-                            self.refreshSchedule()
-                        } else {
-                            print("NAAZ")
-                            self.present(alertController, animated: true, completion: nil)
-                        }
-                    }
-                    
-            }
-                )
-            )
-            alertController.addTextField { (textField: UITextField!) -> Void in
-                textField.placeholder = "Username"
-            }
-            alertController.addTextField { (textField: UITextField!) -> Void in
-                textField.placeholder = "Password"
-                textField.isSecureTextEntry = true
-            }
-            self.present(alertController, animated: true, completion: nil)
+            askForCredentials()
         } else {
             Browser().setCredentials(username: username!, password: password!)
             refreshSchedule()
