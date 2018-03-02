@@ -14,6 +14,18 @@ class MainViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        let prefs = UserDefaults()
+        
+        if !prefs.bool(forKey: "hasLaunchedBefore") {
+            print("First time yahooo!")
+            prefs.set(true, forKey: "hasLaunchedBefore")
+            prefs.set(false, forKey: "time24hr")
+            prefs.set(false, forKey: "date8601")
+            prefs.set("Due", forKey: "assignmentSort")
+        } else {
+            print("not first time boo")
+        }
+
 
         // Do any additional setup after loading the view.
     }

@@ -46,8 +46,6 @@ class AssignmentTableViewController: UITableViewController {
     var dateMinWidth: CGFloat = 0.0
 
     override func viewDidLoad() {
-        
-        fmt.dateFormat = "M/d/yyyy"
 
         super.viewDidLoad()
         
@@ -70,6 +68,9 @@ class AssignmentTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        fmt.dateFormat = (UserDefaults().bool(forKey: "date8601")) ?
+            "yyyy-MM-dd" : "M/d/yyyy"
+        dateMinWidth = 0.0
         super.viewWillAppear(animated)
         activityIndicator.startAnimating()
 
@@ -82,7 +83,18 @@ class AssignmentTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        refresh(sorter: sortByDue(as1:as2:))
+        switch UserDefaults().string(forKey: "assignmentSort") {
+        case "Due"?:
+            refresh(sorter: sortByDue(as1:as2:))
+        case "Assigned"?:
+            refresh(sorter: sortByAssigned(as1:as2:))
+        case "Class"?:
+            refresh(sorter: sortByClass(as1:as2:))
+        default:
+            print("wut wut in the")
+            refresh(sorter: sortByDue(as1:as2:))
+        }
+        
     }
     
     func refresh(sorter: @escaping (Assignment, Assignment) -> Bool) {

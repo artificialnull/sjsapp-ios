@@ -462,7 +462,7 @@
         <!--Settings-->
         <scene sceneID="lXQ-ks-q04">
             <objects>
-                <tableViewController id="eE8-MD-6CP" sceneMemberID="viewController">
+                <tableViewController id="eE8-MD-6CP" customClass="SettingsTableViewController" customModule="sjsapp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="5JW-tc-LZP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -485,6 +485,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J5K-N2-deH">
                                                     <rect key="frame" x="310" y="6.5" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="timeSwitchChanged" destination="eE8-MD-6CP" eventType="valueChanged" id="TAE-rW-5dK"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -507,8 +510,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Default Sorting Method" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiI-8z-i3N">
-                                                    <rect key="frame" x="16" y="11" width="179" height="22"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Default Sort Method" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiI-8z-i3N">
+                                                    <rect key="frame" x="16" y="11" width="155.5" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -545,6 +548,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FqB-cu-m3B">
                                                     <rect key="frame" x="310" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="dateSwitchChanged" destination="eE8-MD-6CP" eventType="valueChanged" id="2QV-un-YMS"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -614,6 +620,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="Aky-Gp-2gD"/>
+                    <connections>
+                        <outlet property="dateFormatSwitch" destination="FqB-cu-m3B" id="vj7-vt-ZIL"/>
+                        <outlet property="sortLabel" destination="3M0-pk-8YJ" id="LGu-Ty-ryv"/>
+                        <outlet property="timeFormatSwitch" destination="J5K-N2-deH" id="E2o-Cl-4tb"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GdC-47-wvV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

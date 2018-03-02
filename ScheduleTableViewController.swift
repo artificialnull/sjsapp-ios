@@ -25,8 +25,6 @@ class ScheduleTableViewController: UITableViewController {
     @IBOutlet weak var titleBackwardButton: UIBarButtonItem!
     
     override func viewDidLoad() {
-        
-        fmt.dateFormat = "HH:mm"
 
         super.viewDidLoad()
         
@@ -70,8 +68,12 @@ class ScheduleTableViewController: UITableViewController {
             self.scheduledClasses = response!
             if (self.scheduledClasses.count == 0) {
                 let emptyDisplayClass = ScheduledClass()
-                emptyDisplayClass.classStart = self.fmt.date(from: "08:30")!
-                emptyDisplayClass.classEnd = self.fmt.date(from: "15:35")!
+                
+                let _fmt = DateFormatter()
+                _fmt.dateFormat = "HH:mm"
+                
+                emptyDisplayClass.classStart = _fmt.date(from: "08:30")!
+                emptyDisplayClass.classEnd = _fmt.date(from: "15:35")!
                 emptyDisplayClass.className = "Nothing scheduled"
                 emptyDisplayClass.classTeacher = "SJS"
                 self.scheduledClasses.append(emptyDisplayClass)
@@ -116,6 +118,9 @@ class ScheduleTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        fmt.dateFormat = (UserDefaults().bool(forKey: "time24hr"))
+            ? "HH:mm" : "h:mm aa"
+        timeMinWidth = 0.0
         super.viewWillAppear(animated)
         scheduledClasses = [ScheduledClass]()
         self.tableView.separatorStyle = .none
