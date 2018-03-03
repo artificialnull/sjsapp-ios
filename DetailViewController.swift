@@ -162,12 +162,16 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell?.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 self.navigationController?.pushViewController(evc, animated: true)
             }
+            tableView.deselectRow(at: indexPath, animated: true)
+
         case 2:
             let evc = self.storyboard!
                 .instantiateViewController(withIdentifier: "ExtraVC") as! ExtraViewController
             evc.url = URL(string: (assignment?.assignmentLinks[indexPath.row].extraUrl)!)
             evc.name = assignment?.assignmentLinks[indexPath.row].extraTitle
             self.navigationController?.pushViewController(evc, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
+
         default:
             return
         }
