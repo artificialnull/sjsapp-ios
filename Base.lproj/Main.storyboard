@@ -107,12 +107,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Schedule" id="Lkk-37-k2C">
-                        <barButtonItem key="leftBarButtonItem" systemItem="rewind" id="sZl-1Q-FRK">
+                        <barButtonItem key="leftBarButtonItem" image="back" id="sZl-1Q-FRK">
                             <connections>
                                 <action selector="previousDay" destination="fOs-yu-4rW" id="jMA-9n-577"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="fastForward" id="soP-Ap-tHo">
+                        <barButtonItem key="rightBarButtonItem" image="forward" id="soP-Ap-tHo">
                             <connections>
                                 <action selector="nextDay" destination="fOs-yu-4rW" id="9hr-Og-NVu"/>
                             </connections>
@@ -685,6 +685,8 @@
     </scenes>
     <resources>
         <image name="assignments" width="30" height="30"/>
+        <image name="back" width="25" height="25"/>
+        <image name="forward" width="25" height="25"/>
         <image name="range" width="25" height="25"/>
         <image name="schedule" width="30" height="30"/>
         <image name="settings" width="30" height="30"/>
