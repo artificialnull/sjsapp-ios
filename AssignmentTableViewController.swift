@@ -51,6 +51,21 @@ class AssignmentTableViewController: UITableViewController {
     var dateMinWidth: CGFloat = 0.0
 
     override func viewDidLoad() {
+        
+        switch UserDefaults().string(forKey: "assignmentSort") {
+        case "Due"?:
+            sortingBy = sortByDue(as1:as2:)
+            sortingByIndex = 0
+        case "Assigned"?:
+            sortingBy = sortByAssigned(as1:as2:)
+            sortingByIndex = 1
+        case "Class"?:
+            sortingBy = sortByClass(as1:as2:)
+            sortingByIndex = 2
+        default:
+            print("wut wut in the")
+            refresh()
+        }
 
         super.viewDidLoad()
         
@@ -132,20 +147,7 @@ class AssignmentTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        switch UserDefaults().string(forKey: "assignmentSort") {
-        case "Due"?:
-            sortingBy = sortByDue(as1:as2:)
-            sortingByIndex = 0
-        case "Assigned"?:
-            sortingBy = sortByAssigned(as1:as2:)
-            sortingByIndex = 1
-        case "Class"?:
-            sortingBy = sortByClass(as1:as2:)
-            sortingByIndex = 2
-        default:
-            print("wut wut in the")
-            refresh()
-        }
+        
         refresh()
         
     }
