@@ -90,8 +90,8 @@ class SettingsTableViewController: UITableViewController {
             let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: {_ in
                 let keychain = KeychainSwift()
-                keychain.set("", forKey: "username")
-                keychain.set("", forKey: "password")
+                keychain.delete("username")
+                keychain.delete("password")
                 Browser().clearCredentials()
                 (self.tabBarController as! MainViewController).askForCredentials()
             }))
