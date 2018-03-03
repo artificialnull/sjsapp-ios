@@ -22,6 +22,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         fmt.dateFormat = "M/d/yyyy HH:mm"
         self.navigationItem.title = "Details"
         if assignment?.assignmentStatus.statusCode != Assignment.Graded.statusCode {
@@ -44,6 +45,9 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.navigationController?.isToolbarHidden = true
+        
         self.shortLabel.text = assignment?.assignmentShort.htmlToString
         self.classLabel.text = assignment?.assignmentClass
         self.assignedLabel.text = self.fmt.string(from: (assignment!.assignmentAssigned))

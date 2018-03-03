@@ -36,8 +36,6 @@ extension String {
 }
 
 class AssignmentTableViewController: UITableViewController {
-    @IBOutlet weak var sortButton: UIBarButtonItem!
-    
     var assignments = [Assignment]()
     var activityIndicator: UIActivityIndicatorView!
 
@@ -67,11 +65,40 @@ class AssignmentTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+    @objc func rangeChanger() {
+        print("zay")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.isToolbarHidden = false
+        
+        var items = [UIBarButtonItem]()
+        items.append(UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: self, action: nil))
+        items.append(UIBarButtonItem(image: #imageLiteral(resourceName: "range"), style: .plain, target: self,
+                                     action: #selector(rangeChanger)))
+        items.append(UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: self, action: nil))
+        items.append(UIBarButtonItem(image: #imageLiteral(resourceName: "sorting"), style: .plain, target: self,
+                                     action: #selector(showSortByMenu)))
+        items.append(UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: self, action: nil))
+        items.append(UIBarButtonItem(image: #imageLiteral(resourceName: "view"), style: .plain, target: self,
+                                     action: #selector(rangeChanger)))
+        items.append(UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: self, action: nil))
+        self.toolbarItems = items
+        self.navigationController?.toolbar.tintColor = UIColor.red
+        
         fmt.dateFormat = (UserDefaults().bool(forKey: "date8601")) ?
             "yyyy-MM-dd" : "M/d/yyyy"
         dateMinWidth = 0.0
-        super.viewWillAppear(animated)
         activityIndicator.startAnimating()
 
         assignments = [Assignment]()
@@ -171,7 +198,7 @@ class AssignmentTableViewController: UITableViewController {
         }
     }
     
-    @IBAction func showSortByMenu() {
+    @objc func showSortByMenu() {
         let alert = UIAlertController(title: "Sort by", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Due", style: .default, handler: {_ in
             self.refresh(sorter: self.sortByDue(as1:as2:))

@@ -250,17 +250,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Assignments" id="W19-1H-Vsz">
-                        <barButtonItem key="leftBarButtonItem" image="range" style="plain" id="oEM-NY-Aca"/>
-                        <barButtonItem key="rightBarButtonItem" image="sorting" style="plain" id="eRf-Dv-dR9">
-                            <connections>
-                                <action selector="showSortByMenu" destination="EdZ-DS-ljR" id="7MI-WQ-T3y"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" image="back" id="VaN-pX-nSB"/>
+                        <barButtonItem key="rightBarButtonItem" image="forward" style="plain" id="UZa-gC-oiF"/>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="sortButton" destination="eRf-Dv-dR9" id="mCj-Pk-8O9"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hRW-dR-YMR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -687,10 +680,8 @@
         <image name="assignments" width="30" height="30"/>
         <image name="back" width="25" height="25"/>
         <image name="forward" width="25" height="25"/>
-        <image name="range" width="25" height="25"/>
         <image name="schedule" width="30" height="30"/>
         <image name="settings" width="30" height="30"/>
-        <image name="sorting" width="25" height="25"/>
     </resources>
     <color key="tintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
