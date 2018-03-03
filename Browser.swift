@@ -83,10 +83,16 @@ class Browser {
         }
     }
     
-    func getAssignmentJSON(handler: @escaping (([Assignment]?) -> ())) {
+    func getAssignmentJSON(startDate: Date, endDate: Date, viewBy: Int, handler: @escaping (([Assignment]?) -> ())) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M'%2F'd'%2F'yyyy"
+
         logIn() { _ in
             Alamofire.request("https://sjs.myschoolapp.com/api/DataDirect/"
-                + "AssignmentCenterAssignments/?format=json&filter=2&persona=2")
+                + "AssignmentCenterAssignments/?format=json&filter=\(viewBy)&persona=2"
+                + "&dateStart=" + formatter.string(from: startDate)
+                + "&dateEnd="   + formatter.string(from: endDate)
+                )
                 .responseJSON { response in
                     let json = JSON(response.result.value as Any)
                     var assignments = [Assignment]()

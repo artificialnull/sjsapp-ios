@@ -26,7 +26,13 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         fmt.dateFormat = "M/d/yyyy HH:mm"
         self.navigationItem.title = "Details"
         if assignment?.assignmentStatus.statusCode != Assignment.Graded.statusCode {
-            (statusButton.subviews[2]).tintColor = Assignment.toDoColor
+            if assignment?.assignmentDue.compare(Date()) == .orderedDescending {
+                (statusButton.subviews[2]).tintColor = Assignment.toDoColor
+            } else {
+                statusButton.removeSegment(at: 0, animated: true)
+                statusButton.insertSegment(withTitle: "Overdue", at: 0, animated: true)
+                statusButton.subviews[2].tintColor = Assignment.overdueColor
+            }
             (statusButton.subviews[1]).tintColor = Assignment.inProgressColor
             (statusButton.subviews[0]).tintColor = Assignment.completedColor
         } else {
@@ -53,7 +59,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.assignedLabel.text = self.fmt.string(from: (assignment!.assignmentAssigned))
         self.dueLabel.text = self.fmt.string(from: (assignment!.assignmentDue))
         
-        self.statusButton.selectedSegmentIndex = (assignment?.assignmentStatus.statusCode)! + 1
+        self.statusButton.selectedSegmentIndex = ((assignment?.assignmentStatus.statusCode)! + 1) % 3
         
         self.statusButton.addTarget(self, action: #selector(DetailViewController.statusChanged(_:)), for: .valueChanged)
         Browser().getFullAssignment(assignment: assignment!) { response in

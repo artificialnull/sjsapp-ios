@@ -40,12 +40,21 @@ class AssignmentTableViewController: UITableViewController {
     var activityIndicator: UIActivityIndicatorView!
 
     let fmt = DateFormatter()
+    var titleDateFormatter: DateFormatter = DateFormatter()
+    var chosenDate = Date()
+    
+    var viewBy = 2
+    var futureOffsetDays = 0
+    var sortingBy: ((Assignment, Assignment) -> Bool)?
+    var sortingByIndex = 0
     
     var dateMinWidth: CGFloat = 0.0
 
     override func viewDidLoad() {
 
         super.viewDidLoad()
+        
+        titleDateFormatter.dateFormat = "E - MMM d, yyyy"
         
         activityIndicator = UIActivityIndicatorView(frame:
             CGRect(
@@ -69,9 +78,22 @@ class AssignmentTableViewController: UITableViewController {
         print("zay")
     }
     
+    @IBAction func nextDay() {
+        chosenDate = Calendar.current.date(
+            byAdding: .day, value: 1,
+            to: chosenDate)!
+        refresh()
+    }
+    
+    @IBAction func previousDay() {
+        chosenDate = Calendar.current.date(
+            byAdding: .day, value: -1,
+            to: chosenDate)!
+        refresh()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         self.navigationController?.isToolbarHidden = false
         
         var items = [UIBarButtonItem]()
@@ -79,7 +101,7 @@ class AssignmentTableViewController: UITableViewController {
             barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
             target: self, action: nil))
         items.append(UIBarButtonItem(image: #imageLiteral(resourceName: "range"), style: .plain, target: self,
-                                     action: #selector(rangeChanger)))
+                                     action: #selector(showRangeMenu)))
         items.append(UIBarButtonItem(
             barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
             target: self, action: nil))
@@ -89,7 +111,7 @@ class AssignmentTableViewController: UITableViewController {
             barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
             target: self, action: nil))
         items.append(UIBarButtonItem(image: #imageLiteral(resourceName: "view"), style: .plain, target: self,
-                                     action: #selector(rangeChanger)))
+                                     action: #selector(showViewByMenu)))
         items.append(UIBarButtonItem(
             barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
             target: self, action: nil))
@@ -112,19 +134,23 @@ class AssignmentTableViewController: UITableViewController {
         
         switch UserDefaults().string(forKey: "assignmentSort") {
         case "Due"?:
-            refresh(sorter: sortByDue(as1:as2:))
+            sortingBy = sortByDue(as1:as2:)
+            sortingByIndex = 0
         case "Assigned"?:
-            refresh(sorter: sortByAssigned(as1:as2:))
+            sortingBy = sortByAssigned(as1:as2:)
+            sortingByIndex = 1
         case "Class"?:
-            refresh(sorter: sortByClass(as1:as2:))
+            sortingBy = sortByClass(as1:as2:)
+            sortingByIndex = 2
         default:
             print("wut wut in the")
-            refresh(sorter: sortByDue(as1:as2:))
+            refresh()
         }
+        refresh()
         
     }
     
-    func refresh(sorter: @escaping (Assignment, Assignment) -> Bool) {
+    func refresh() {
         
         if !Browser().credentialsExist() {
             let noLogInIndicator = UILabel()
@@ -136,12 +162,17 @@ class AssignmentTableViewController: UITableViewController {
             self.tableView.backgroundView = activityIndicator
         }
         
+        self.navigationItem.title = titleDateFormatter.string(from: chosenDate)
+
         activityIndicator.startAnimating()
         
         assignments = [Assignment]()
         self.tableView.separatorStyle = .none
         self.tableView.reloadData()
-        Browser().getAssignmentJSON() { response in
+        let endDate = Calendar.current.date(byAdding: .day,
+                                            value: futureOffsetDays,
+                                            to: chosenDate)!
+        Browser().getAssignmentJSON(startDate: chosenDate, endDate: endDate, viewBy: viewBy) { response in
             for assignment in response! {
                 let startTimeStr = self.fmt.string(from: assignment.assignmentAssigned)
                 let endTimeStr = self.fmt.string(from: assignment.assignmentDue)
@@ -163,7 +194,7 @@ class AssignmentTableViewController: UITableViewController {
             print(self.dateMinWidth)
             self.assignments = response!
             self.assignments.sort { as1, as2 in
-                return sorter(as1, as2)
+                return self.sortingBy!(as1, as2)
             }
             self.activityIndicator.stopAnimating()
             self.tableView.separatorStyle = .singleLine
@@ -201,18 +232,84 @@ class AssignmentTableViewController: UITableViewController {
     @objc func showSortByMenu() {
         let alert = UIAlertController(title: "Sort by", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Due", style: .default, handler: {_ in
-            self.refresh(sorter: self.sortByDue(as1:as2:))
+            self.sortingBy = self.sortByDue(as1:as2:)
+            self.sortingByIndex = 0
+            self.refresh()
         }))
         alert.addAction(UIAlertAction(title: "Assigned", style: .default, handler: {_ in
-            self.refresh(sorter: self.sortByAssigned(as1:as2:))
+            self.sortingBy = self.sortByAssigned(as1:as2:)
+            self.sortingByIndex = 1
+            self.refresh()
         }))
         alert.addAction(UIAlertAction(title: "Class", style: .default, handler: {_ in
-            self.refresh(sorter: self.sortByClass(as1:as2:))
+            self.sortingBy = self.sortByClass(as1:as2:)
+            self.sortingByIndex = 2
+            self.refresh()
         }))
+        
+        alert.actions[sortingByIndex].setValue(true, forKey: "checked")
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         alert.view.tintColor = UIColor.red
 
+        present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func showRangeMenu() {
+        let alert = UIAlertController(title: "Show assignments for the next", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Day", style: .default, handler: {_ in
+            self.futureOffsetDays = 0
+            self.refresh()
+        }))
+        alert.addAction(UIAlertAction(title: "7 Days", style: .default, handler: {_ in
+            self.futureOffsetDays = 7
+            self.refresh()
+        }))
+        alert.addAction(UIAlertAction(title: "30 Days", style: .default, handler: {_ in
+            self.futureOffsetDays = 30
+            self.refresh()
+        }))
+        
+        var checkedIndex = 0
+        switch futureOffsetDays {
+        case 0:
+            checkedIndex = 0
+        case 7:
+            checkedIndex = 1
+        case 30:
+            checkedIndex = 2
+        default:
+            checkedIndex = 0
+        }
+        
+        alert.actions[checkedIndex].setValue(true, forKey: "checked")
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.view.tintColor = UIColor.red
+        present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func showViewByMenu() {
+        let alert = UIAlertController(title: "View by", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Due", style: .default, handler: {_ in
+            self.viewBy = 1
+            self.refresh()
+        }))
+        alert.addAction(UIAlertAction(title: "Active", style: .default, handler: {_ in
+            self.viewBy = 2
+            self.refresh()
+        }))
+        alert.addAction(UIAlertAction(title: "Assigned", style: .default, handler: {_ in
+            self.viewBy = 0
+            self.refresh()
+        }))
+        
+        print((viewBy + 2) % 3)
+        alert.actions[(viewBy + 2) % 3].setValue(true, forKey: "checked")
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.view.tintColor = UIColor.red
+        
         present(alert, animated: true, completion: nil)
     }
 
@@ -278,6 +375,13 @@ class AssignmentTableViewController: UITableViewController {
             self.updateAssignmentCell(assignment: assignment, cell: cell)
         }
         toDoAction.backgroundColor = Assignment.toDoColor
+        let overdueAction = UITableViewRowAction(style: .normal, title: "Overdue")
+        { rowAction, indexPath in
+            print("OVDU \(assignment.assignmentIndexID)")
+            assignment.assignmentStatus = Assignment.Overdue
+            self.updateAssignmentCell(assignment: assignment, cell: cell)
+        }
+        overdueAction.backgroundColor = Assignment.overdueColor
         let inProgressAction = UITableViewRowAction(style: .normal, title: "In Progress")
         { rowAction, indexPath in
             print("IN PROG \(assignment.assignmentIndexID)")
@@ -295,7 +399,10 @@ class AssignmentTableViewController: UITableViewController {
         }
         completedAction.backgroundColor = Assignment.completedColor
         if assignment.assignmentStatus.statusCode != Assignment.Graded.statusCode {
-            return [completedAction, inProgressAction, toDoAction]
+            return [completedAction, inProgressAction,
+                    (assignment.assignmentDue.compare(Date()) == .orderedDescending)
+                ? toDoAction : overdueAction
+            ]
         } else {
             return []
         }
@@ -342,6 +449,7 @@ class AssignmentTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         print("toasting")
+        self.navigationItem.title = "Assignments"
         print(segue.destination)
         if let detailVC = segue.destination as? DetailViewController {
             print("YAMS")

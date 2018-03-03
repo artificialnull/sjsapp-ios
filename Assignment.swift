@@ -14,6 +14,7 @@ class Assignment {
     static var inProgressColor = UIColor(red:0.97, green:0.67, blue:0.35, alpha:1.0)
     static var completedColor = UIColor(red:0.10, green:0.70, blue:0.58, alpha:1.0)
     static var gradedColor = UIColor(red:0.10, green:0.70, blue:0.58, alpha:1.0)
+    static var overdueColor = UIColor(red:0.93, green:0.33, blue:0.40, alpha:1.0)
     
     class AssignmentStatus {
         var statusString = ""
@@ -56,6 +57,7 @@ class Assignment {
     static var InProgress = AssignmentStatus(sstr: "In Progress", scode: 0, scolor: inProgressColor)
     static var Completed = AssignmentStatus(sstr: "Completed", scode: 1, scolor: completedColor)
     static var Graded = AssignmentStatus(sstr: "Graded", scode: 4, scolor: gradedColor)
+    static var Overdue = AssignmentStatus(sstr: "Overdue", scode: 2, scolor: overdueColor)
     
     var assignmentClass = ""
     var assignmentShort = ""
@@ -75,6 +77,8 @@ class Assignment {
             return Assignment.InProgress
         case 1:
             return Assignment.Completed
+        case 2:
+            return Assignment.Overdue
         case 4:
             return Assignment.Graded
         default:

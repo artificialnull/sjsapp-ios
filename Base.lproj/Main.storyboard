@@ -250,8 +250,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Assignments" id="W19-1H-Vsz">
-                        <barButtonItem key="leftBarButtonItem" image="back" id="VaN-pX-nSB"/>
-                        <barButtonItem key="rightBarButtonItem" image="forward" style="plain" id="UZa-gC-oiF"/>
+                        <barButtonItem key="leftBarButtonItem" image="back" id="VaN-pX-nSB">
+                            <connections>
+                                <action selector="previousDay" destination="EdZ-DS-ljR" id="qD5-KC-1Cj"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="forward" style="plain" id="UZa-gC-oiF">
+                            <connections>
+                                <action selector="nextDay" destination="EdZ-DS-ljR" id="kFm-bd-Mss"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
