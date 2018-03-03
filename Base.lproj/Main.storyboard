@@ -250,7 +250,8 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Assignments" id="W19-1H-Vsz">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="organize" id="eRf-Dv-dR9">
+                        <barButtonItem key="leftBarButtonItem" image="range" style="plain" id="oEM-NY-Aca"/>
+                        <barButtonItem key="rightBarButtonItem" image="sorting" style="plain" id="eRf-Dv-dR9">
                             <connections>
                                 <action selector="showSortByMenu" destination="EdZ-DS-ljR" id="7MI-WQ-T3y"/>
                             </connections>
@@ -684,8 +685,10 @@
     </scenes>
     <resources>
         <image name="assignments" width="30" height="30"/>
+        <image name="range" width="25" height="25"/>
         <image name="schedule" width="30" height="30"/>
         <image name="settings" width="30" height="30"/>
+        <image name="sorting" width="25" height="25"/>
     </resources>
     <color key="tintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
