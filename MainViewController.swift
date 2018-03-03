@@ -65,6 +65,7 @@ class MainViewController: UITabBarController {
                         keychain.set(pw!, forKey: "password")
                         
                         self.refreshSchedule()
+                        self.refreshSettings()
                     } else {
                         print("naz work")
                         self.present(alertController, animated: true, completion: nil)
@@ -109,6 +110,18 @@ class MainViewController: UITabBarController {
                 for kid in nav.childViewControllers {
                     if let sched = kid as? ScheduleTableViewController {
                         sched.refresh()
+                    }
+                }
+            }
+        }
+    }
+    
+    func refreshSettings() {
+        for child in self.childViewControllers {
+            if let nav = child as? UINavigationController {
+                for kid in nav.childViewControllers {
+                    if let sett = kid as? SettingsTableViewController {
+                        sett.refresh()
                     }
                 }
             }

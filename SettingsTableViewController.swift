@@ -13,6 +13,7 @@ class SettingsTableViewController: UITableViewController {
     @IBOutlet weak var timeFormatSwitch: UISwitch!
     @IBOutlet weak var dateFormatSwitch: UISwitch!
     @IBOutlet weak var sortLabel: UILabel!
+    @IBOutlet weak var usernameLabel: UILabel!
     
     let prefs = UserDefaults()
     
@@ -22,6 +23,7 @@ class SettingsTableViewController: UITableViewController {
         timeFormatSwitch.isOn = prefs.bool(forKey: "time24hr")
         dateFormatSwitch.isOn = prefs.bool(forKey: "date6601")
         sortLabel.text = prefs.string(forKey: "assignmentSort")
+        refresh()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -37,6 +39,12 @@ class SettingsTableViewController: UITableViewController {
     
     @IBAction func dateSwitchChanged() {
         prefs.set(dateFormatSwitch.isOn, forKey: "date8601")
+    }
+    
+    func refresh() {
+        if usernameLabel != nil {
+            usernameLabel.text = KeychainSwift().get("username") ?? "(none)"
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,6 +63,8 @@ class SettingsTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         switch section {
         case 1:
+            return 2
+        case 2:
             return 2
         default:
             return 1
@@ -85,7 +95,7 @@ class SettingsTableViewController: UITableViewController {
             
             present(alert, animated: true, completion: nil)
             
-        } else if indexPath.section == 2 && indexPath.row == 0 {
+        } else if indexPath.section == 2 && indexPath.row == 1 {
             print("no meems")
             let alert = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: {_ in
@@ -93,7 +103,9 @@ class SettingsTableViewController: UITableViewController {
                 keychain.delete("username")
                 keychain.delete("password")
                 Browser().clearCredentials()
+                self.refresh()
                 (self.tabBarController as! MainViewController).askForCredentials()
+                
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             alert.view.tintColor = UIColor.red
