@@ -21,6 +21,8 @@ class MainViewController: UITabBarController {
             prefs.set(false, forKey: "time24hr")
             prefs.set(false, forKey: "date8601")
             prefs.set("Due", forKey: "assignmentSort")
+            prefs.set(1, forKey: "assignmentView")
+            prefs.set(0, forKey: "assignmentRange")
         }
 
 

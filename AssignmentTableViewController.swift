@@ -66,6 +66,8 @@ class AssignmentTableViewController: UITableViewController {
             print("wut wut in the")
             refresh()
         }
+        viewBy = UserDefaults().integer(forKey: "assignmentView")
+        futureOffsetDays = UserDefaults().integer(forKey: "assignmentRange")
 
         super.viewDidLoad()
         
@@ -198,8 +200,16 @@ class AssignmentTableViewController: UITableViewController {
             self.assignments.sort { as1, as2 in
                 return self.sortingBy!(as1, as2)
             }
-            self.activityIndicator.stopAnimating()
-            self.tableView.separatorStyle = .singleLine
+            if self.assignments.count > 0 {
+                self.activityIndicator.stopAnimating()
+                self.tableView.separatorStyle = .singleLine
+            } else {
+                let noAssignmentsIndicator = UILabel()
+                noAssignmentsIndicator.center = self.view.center
+                noAssignmentsIndicator.textAlignment = NSTextAlignment.center
+                noAssignmentsIndicator.text = "No assignments match your query"
+                self.tableView.backgroundView = noAssignmentsIndicator
+            }
             self.tableView.reloadData()
         }
     }

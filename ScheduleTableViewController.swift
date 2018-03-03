@@ -77,18 +77,6 @@ class ScheduleTableViewController: UITableViewController {
         
         Browser().getScheduleJSON(date: chosenDate) { response in
             self.scheduledClasses = response!
-            if (self.scheduledClasses.count == 0) {
-                let emptyDisplayClass = ScheduledClass()
-                
-                let _fmt = DateFormatter()
-                _fmt.dateFormat = "HH:mm"
-                
-                emptyDisplayClass.classStart = _fmt.date(from: "08:30")!
-                emptyDisplayClass.classEnd = _fmt.date(from: "15:35")!
-                emptyDisplayClass.className = "Nothing scheduled"
-                emptyDisplayClass.classTeacher = "SJS"
-                self.scheduledClasses.append(emptyDisplayClass)
-            }
             for scheduledClass in self.scheduledClasses {
                 let startTimeStr = self.fmt.string(from: scheduledClass.classStart)
                 let endTimeStr = self.fmt.string(from: scheduledClass.classEnd)
@@ -108,8 +96,16 @@ class ScheduleTableViewController: UITableViewController {
                 }
             }
             print(self.timeMinWidth)
-            self.activityIndicator.stopAnimating()
-            self.tableView.separatorStyle = .singleLine
+            if self.scheduledClasses.count > 0 {
+                self.activityIndicator.stopAnimating()
+                self.tableView.separatorStyle = .singleLine
+            } else {
+                let noClassesIndicator = UILabel()
+                noClassesIndicator.center = self.view.center
+                noClassesIndicator.textAlignment = NSTextAlignment.center
+                noClassesIndicator.text = "Nothing scheduled on this day"
+                self.tableView.backgroundView = noClassesIndicator
+            }
             self.tableView.reloadData()
         }
     }
