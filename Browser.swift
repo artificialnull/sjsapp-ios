@@ -30,6 +30,13 @@ class Browser {
         }
     }
     
+    func credentialsExist() -> Bool {
+        if !Browser.un.isEmpty && !Browser.pw.isEmpty {
+            return true
+        }
+        return false
+    }
+    
     func getToken(handler: @escaping ((DataResponse<String>?) -> ())) {
         Alamofire.request("https://sjs.myschoolapp.com").responseString {
             response in

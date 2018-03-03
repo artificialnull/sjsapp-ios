@@ -98,6 +98,17 @@ class AssignmentTableViewController: UITableViewController {
     }
     
     func refresh(sorter: @escaping (Assignment, Assignment) -> Bool) {
+        
+        if !Browser().credentialsExist() {
+            let noLogInIndicator = UILabel()
+            noLogInIndicator.center = self.view.center
+            noLogInIndicator.textAlignment = NSTextAlignment.center
+            noLogInIndicator.text = "Sign in to load assignments"
+            self.tableView.backgroundView = noLogInIndicator
+        } else {
+            self.tableView.backgroundView = activityIndicator
+        }
+        
         activityIndicator.startAnimating()
         
         assignments = [Assignment]()

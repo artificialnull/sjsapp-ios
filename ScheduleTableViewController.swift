@@ -57,6 +57,17 @@ class ScheduleTableViewController: UITableViewController {
     }
     
     func refresh() {
+        
+        if !Browser().credentialsExist() {
+            let noLogInIndicator = UILabel()
+            noLogInIndicator.center = self.view.center
+            noLogInIndicator.textAlignment = NSTextAlignment.center
+            noLogInIndicator.text = "Sign in to load schedule"
+            self.tableView.backgroundView = noLogInIndicator
+        } else {
+            self.tableView.backgroundView = activityIndicator
+        }
+        
         scheduledClasses = [ScheduledClass]()
         self.tableView.separatorStyle = .none
         self.tableView.reloadData()
