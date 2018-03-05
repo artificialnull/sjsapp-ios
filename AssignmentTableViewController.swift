@@ -201,14 +201,17 @@ class AssignmentTableViewController: UITableViewController {
                 return self.sortingBy!(as1, as2)
             }
             if self.assignments.count > 0 {
+                self.tableView.backgroundView = self.activityIndicator
                 self.activityIndicator.stopAnimating()
                 self.tableView.separatorStyle = .singleLine
+                print("signalshort")
             } else {
                 let noAssignmentsIndicator = UILabel()
                 noAssignmentsIndicator.center = self.view.center
                 noAssignmentsIndicator.textAlignment = NSTextAlignment.center
                 noAssignmentsIndicator.text = "No assignments match your query"
                 self.tableView.backgroundView = noAssignmentsIndicator
+                print("signallong")
             }
             self.tableView.reloadData()
         }

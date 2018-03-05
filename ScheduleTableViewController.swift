@@ -97,6 +97,7 @@ class ScheduleTableViewController: UITableViewController {
             }
             print(self.timeMinWidth)
             if self.scheduledClasses.count > 0 {
+                self.tableView.backgroundView = self.activityIndicator
                 self.activityIndicator.stopAnimating()
                 self.tableView.separatorStyle = .singleLine
             } else {
