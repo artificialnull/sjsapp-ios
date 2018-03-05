@@ -150,7 +150,7 @@ class SettingsTableViewController: UITableViewController {
                 alert.view.tintColor = UIColor.red
                 present(alert, animated: true, completion: nil)
             default:
-                return
+                break
             }
             
         } else if indexPath.section == 2 && indexPath.row == 1 {
