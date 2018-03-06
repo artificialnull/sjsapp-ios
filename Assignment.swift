@@ -90,10 +90,12 @@ class Assignment {
         let fmt = DateFormatter()
         fmt.dateFormat = "M/d/yyyy h:mm aa"
         
+        print(json)
+        
         assignmentClass = json["groupname"].string!
         assignmentShort = json["short_description"].string!
         assignmentLong = json["long_description"].string
-        assignmentType = json["assignment_type"].string!
+        assignmentType = json["assignment_type"].string ?? "None"
         assignmentStatus = statusFromInt(status: json["assignment_status"].int!)
         assignmentAssigned = fmt.date(from: json["date_assigned"].string!)!
         assignmentDue = fmt.date(from: json["date_due"].string!)!
