@@ -46,7 +46,6 @@ class Browser {
                     .components(separatedBy: "value=\"")[1]
                     .components(separatedBy: "\"")[0]
             }
-            print(Browser.rvt)
             handler(response)
         }
     }
@@ -54,8 +53,6 @@ class Browser {
     func logIn(handler: @escaping ((DataResponse<Any>?) -> ())) {
         if Browser.un != "" && Browser.pw != "" {
             getToken() { _ in
-                print(Browser.un)
-                print(Browser.pw)
                 Alamofire.request(
                     "https://sjs.myschoolapp.com/api/SignIn",
                     method: .post,
@@ -65,7 +62,6 @@ class Browser {
                     ],
                     encoding: JSONEncoding.default
                     ).responseJSON { response in
-                        print(response)
                         handler(response)
                 }
             }
@@ -77,7 +73,6 @@ class Browser {
             Alamofire.request(
                 "https://sjs.myschoolapp.com/api/webapp/userstatus"
                 ).responseJSON { response in
-                    print(response)
                     handler(JSON(response.result.value as Any)["TokenValid"].bool!)
             }
         }
@@ -111,7 +106,6 @@ class Browser {
         let formatter = DateFormatter()
         formatter.dateFormat = "M'%2F'd'%2F'yyyy"
         logIn() { _ in
-            print(formatter.string(from: date))
             Alamofire.request("https://sjs.myschoolapp.com/api/schedule/"
                 + "MyDayCalendarStudentList/?scheduleDate="
                 + formatter.string(from: date)
@@ -142,7 +136,6 @@ class Browser {
                                 "requestverificationtoken": Browser.rvt
                 ]
                 ).responseJSON { response in
-                    print(response)
             }
         }
     }
@@ -182,7 +175,6 @@ class Browser {
     func downloadFile(download: Assignment.Download, handler: @escaping ((DownloadResponse<Data>?) -> ())) {
         let destination = DownloadRequest
             .suggestedDownloadDestination(for: .documentDirectory)
-        print(destination)
         Alamofire.download(download.extraUrl, to: destination).responseData {
             response in handler(response)}
 

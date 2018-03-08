@@ -20,7 +20,6 @@ class ExtraViewController: UIViewController, WKUIDelegate {
     var name: String?
     
     @objc func openExternally() {
-        print("boi")
         let toOpen = file ?? url ?? URL(string: "")
         let svc = SFSafariViewController(url: toOpen!)
         present(svc, animated: true, completion: nil)
@@ -44,23 +43,10 @@ class ExtraViewController: UIViewController, WKUIDelegate {
         } else if url != nil {
             webView.load(URLRequest(url: url!))
         }
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

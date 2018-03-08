@@ -40,12 +40,10 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             statusButton.subviews[0].tintColor = Assignment.gradedColor
             statusButton.selectedSegmentIndex = 0
         }
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,10 +64,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.statusButton.addTarget(self, action: #selector(DetailViewController.statusChanged(_:)), for: .valueChanged)
         Browser().getFullAssignment(assignment: assignment!) { response in
-            print(response?.assignmentDownloads.count as Any)
-            print(response?.assignmentLinks.count as Any)
             self.assignment = response
-            print(self.tableView.bounds.height)
             self.tableView.reloadData()
         }
         
@@ -81,7 +76,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("YAZAAZ")
         let cellIdentifier = "DetailExtraCell"
         let cell = tableView.dequeueReusableCell(
             withIdentifier: cellIdentifier, for: indexPath) as? ExtraTableViewCell
@@ -89,19 +83,14 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         switch indexPath.section {
         case 2:
-            //todo
-            print("LANKS")
             cell?.extraLink = assignment?.assignmentLinks[indexPath.row].extraUrl
             cell?.textLabel?.text = assignment?.assignmentLinks[indexPath.row].extraTitle
             cell?.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         case 1:
-            print("donjons")
             cell?.extraLink = assignment?.assignmentDownloads[indexPath.row].extraUrl
             cell?.textLabel?.text = assignment?.assignmentDownloads[indexPath.row].extraTitle
             cell?.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-            //todo
         case 0:
-            print("informing")
             cell?.textLabel?.text = assignment?.assignmentLong?.htmlToString
             cell?.textLabel?.numberOfLines = 0
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
@@ -116,7 +105,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case 0:
             return "Info"
         case 1:
-            print("we're in")
             return "Downloads"
         case 2:
             return "Links"
@@ -126,15 +114,10 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("bois")
         switch section {
         case 2:
-            print("meems")
-            print(assignment?.assignmentLinks.count)
             return (assignment?.assignmentLinks.count)!
         case 1:
-            print("not meeming")
-            print((assignment?.assignmentDownloads.count)!)
             return (assignment?.assignmentDownloads.count)!
         case 0:
             if assignment?.assignmentLong?.count != 0 && !(assignment?.assignmentLong ?? "").isEmpty {
@@ -148,7 +131,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("le")
         return 3
     }
 
@@ -169,7 +151,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let evc = self.storyboard!
                     .instantiateViewController(withIdentifier: "ExtraVC") as! ExtraViewController
                 evc.file = (response?.destinationURL)
-                print(evc.file)
                 evc.name = (self.assignment?.assignmentDownloads[indexPath.row])?.extraTitle
                 cell?.accessoryView = nil
                 cell?.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
@@ -189,19 +170,5 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             return
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        if let extraVC = segue.destination as? ExtraViewController {
-            extraVC.urlStr = (sender as? ExtraTableViewCell)?.extraLink
-        }
-    }
- 
-     */
     
-
 }

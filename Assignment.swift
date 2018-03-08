@@ -89,9 +89,7 @@ class Assignment {
     init(json: JSON) {
         let fmt = DateFormatter()
         fmt.dateFormat = "M/d/yyyy h:mm aa"
-        
-        print(json)
-        
+                
         assignmentClass = json["groupname"].string!
         assignmentShort = json["short_description"].string!
         assignmentLong = json["long_description"].string
