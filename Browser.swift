@@ -9,12 +9,15 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import Reachability
 
 class Browser {
     
     static var un: String = ""
     static var pw: String = ""
     static var rvt: String = ""
+    
+    static var reachability = Reachability()!
     
     func setCredentials(username: String, password: String) {
         Browser.un = username
@@ -38,6 +41,10 @@ class Browser {
     }
     
     func getToken(handler: @escaping ((DataResponse<String>?) -> ())) {
+        if Browser.reachability.connection == .none {
+            (UIApplication.shared.keyWindow?.rootViewController as! MainViewController).kindlyTellUserToFuckOff()
+            return
+        }
         Alamofire.request("https://sjs.myschoolapp.com").responseString {
             response in
             if response.result.value != nil {
@@ -173,6 +180,10 @@ class Browser {
     }
     
     func downloadFile(download: Assignment.Download, handler: @escaping ((DownloadResponse<Data>?) -> ())) {
+        if Browser.reachability.connection == .none {
+            (UIApplication.shared.keyWindow?.rootViewController as! MainViewController).kindlyTellUserToFuckOff()
+            handler(nil)
+        }
         let destination = DownloadRequest
             .suggestedDownloadDestination(for: .documentDirectory)
         Alamofire.download(download.extraUrl, to: destination).responseData {

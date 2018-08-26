@@ -8,6 +8,7 @@
 
 import UIKit
 import KeychainSwift
+import Reachability
 
 class MainViewController: UITabBarController {
 
@@ -24,7 +25,30 @@ class MainViewController: UITabBarController {
             prefs.set(1, forKey: "assignmentView")
             prefs.set(0, forKey: "assignmentRange")
         }
+        
+        let reachability = Reachability()!
+        reachability.whenUnreachable = { _ in
+            print("wtf")
+            self.kindlyTellUserToFuckOff()
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
 
+    }
+    
+    func kindlyTellUserToFuckOff() {
+        let alertController = UIAlertController(
+            title: "Network Unavailable",
+            message: "This app cannot function without a working internet connection. Please connect to a working network to continue using this app.",
+            preferredStyle: .alert
+        )
+        alertController.view.tintColor = UIColor.red
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func askForCredentials() {

@@ -10,11 +10,10 @@ import Foundation
 import SwiftyJSON
 
 class Assignment {
-    static var toDoColor = UIColor(red:0.75, green:0.68, blue:0.87, alpha:1.0)
-    static var inProgressColor = UIColor(red:0.97, green:0.67, blue:0.35, alpha:1.0)
-    static var completedColor = UIColor(red:0.10, green:0.70, blue:0.58, alpha:1.0)
-    static var gradedColor = UIColor(red:0.10, green:0.70, blue:0.58, alpha:1.0)
-    static var overdueColor = UIColor(red:0.93, green:0.33, blue:0.40, alpha:1.0)
+    static var infoColor = UIColor(red:0.75, green:0.68, blue:0.87, alpha:1.0)
+    static var warningColor = UIColor(red:0.97, green:0.67, blue:0.35, alpha:1.0)
+    static var successColor = UIColor(red:0.10, green:0.70, blue:0.58, alpha:1.0)
+    static var importantColor = UIColor(red:0.93, green:0.33, blue:0.40, alpha:1.0)
     
     class AssignmentStatus {
         var statusString = ""
@@ -53,11 +52,12 @@ class Assignment {
     var assignmentDownloads = [Download]()
     var assignmentLinks = [Link]()
     
-    static var ToDo = AssignmentStatus(sstr: "To Do", scode: -1, scolor: toDoColor)
-    static var InProgress = AssignmentStatus(sstr: "In Progress", scode: 0, scolor: inProgressColor)
-    static var Completed = AssignmentStatus(sstr: "Completed", scode: 1, scolor: completedColor)
-    static var Graded = AssignmentStatus(sstr: "Graded", scode: 4, scolor: gradedColor)
-    static var Overdue = AssignmentStatus(sstr: "Overdue", scode: 2, scolor: overdueColor)
+    static var ToDo = AssignmentStatus(sstr: "To Do", scode: -1, scolor: infoColor)
+    static var InProgress = AssignmentStatus(sstr: "In Progress", scode: 0, scolor: warningColor)
+    static var Completed = AssignmentStatus(sstr: "Completed", scode: 1, scolor: successColor)
+    static var Graded = AssignmentStatus(sstr: "Graded", scode: 4, scolor: successColor)
+    static var Overdue = AssignmentStatus(sstr: "Overdue", scode: 2, scolor: importantColor)
+    static var Paused = AssignmentStatus(sstr: "Paused", scode: 6, scolor: warningColor)
     
     var assignmentClass = ""
     var assignmentShort = ""
@@ -81,6 +81,8 @@ class Assignment {
             return Assignment.Overdue
         case 4:
             return Assignment.Graded
+        case 6:
+            return Assignment.Paused
         default:
             return AssignmentStatus()
         }

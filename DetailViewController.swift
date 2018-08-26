@@ -24,21 +24,26 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
             
         self.navigationItem.title = "Details"
-        if assignment?.assignmentStatus.statusCode != Assignment.Graded.statusCode {
+        if assignment?.assignmentStatus.statusCode == Assignment.Graded.statusCode {
+            statusButton.removeAllSegments()
+            statusButton.insertSegment(withTitle: "Graded", at: 0, animated: true)
+            statusButton.subviews[0].tintColor = Assignment.Graded.statusColor
+            statusButton.selectedSegmentIndex = 0
+        } else if assignment?.assignmentStatus.statusCode == Assignment.Paused.statusCode {
+            statusButton.removeAllSegments()
+            statusButton.insertSegment(withTitle: "Paused", at: 0, animated: true)
+            statusButton.subviews[0].tintColor = Assignment.Paused.statusColor
+            statusButton.selectedSegmentIndex = 0
+        } else {
             if assignment?.assignmentDue.compare(Date()) == .orderedDescending {
-                (statusButton.subviews[2]).tintColor = Assignment.toDoColor
+                (statusButton.subviews[2]).tintColor = Assignment.ToDo.statusColor
             } else {
                 statusButton.removeSegment(at: 0, animated: true)
                 statusButton.insertSegment(withTitle: "Overdue", at: 0, animated: true)
-                statusButton.subviews[2].tintColor = Assignment.overdueColor
+                statusButton.subviews[2].tintColor = Assignment.Overdue.statusColor
             }
-            (statusButton.subviews[1]).tintColor = Assignment.inProgressColor
-            (statusButton.subviews[0]).tintColor = Assignment.completedColor
-        } else {
-            statusButton.removeAllSegments()
-            statusButton.insertSegment(withTitle: "Graded", at: 0, animated: true)
-            statusButton.subviews[0].tintColor = Assignment.gradedColor
-            statusButton.selectedSegmentIndex = 0
+            (statusButton.subviews[1]).tintColor = Assignment.InProgress.statusColor
+            (statusButton.subviews[0]).tintColor = Assignment.Completed.statusColor
         }
     }
 
@@ -148,13 +153,15 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             Browser().downloadFile(
             download: (assignment?.assignmentDownloads[indexPath.row])!) {
                 response in
-                let evc = self.storyboard!
-                    .instantiateViewController(withIdentifier: "ExtraVC") as! ExtraViewController
-                evc.file = (response?.destinationURL)
-                evc.name = (self.assignment?.assignmentDownloads[indexPath.row])?.extraTitle
                 cell?.accessoryView = nil
                 cell?.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-                self.navigationController?.pushViewController(evc, animated: true)
+                if response != nil {
+                    let evc = self.storyboard!
+                        .instantiateViewController(withIdentifier: "ExtraVC") as! ExtraViewController
+                    evc.file = (response?.destinationURL)
+                    evc.name = (self.assignment?.assignmentDownloads[indexPath.row])?.extraTitle
+                    self.navigationController?.pushViewController(evc, animated: true)
+                }
             }
             tableView.deselectRow(at: indexPath, animated: true)
 

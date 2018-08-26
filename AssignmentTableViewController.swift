@@ -366,14 +366,14 @@ class AssignmentTableViewController: UITableViewController {
             assignment.assignmentStatus = Assignment.ToDo
             self.updateAssignmentCell(assignment: assignment, cell: cell)
         }
-        toDoAction.backgroundColor = Assignment.toDoColor
+        toDoAction.backgroundColor = Assignment.infoColor
         let overdueAction = UITableViewRowAction(style: .normal, title: "Overdue")
         { rowAction, indexPath in
             print("OVDU \(assignment.assignmentIndexID)")
             assignment.assignmentStatus = Assignment.Overdue
             self.updateAssignmentCell(assignment: assignment, cell: cell)
         }
-        overdueAction.backgroundColor = Assignment.overdueColor
+        overdueAction.backgroundColor = Assignment.importantColor
         let inProgressAction = UITableViewRowAction(style: .normal, title: "In Progress")
         { rowAction, indexPath in
             print("IN PROG \(assignment.assignmentIndexID)")
@@ -381,7 +381,7 @@ class AssignmentTableViewController: UITableViewController {
             self.updateAssignmentCell(assignment: assignment, cell: cell)
 
         }
-        inProgressAction.backgroundColor = Assignment.inProgressColor
+        inProgressAction.backgroundColor = Assignment.warningColor
         let completedAction = UITableViewRowAction(style: .normal, title: "Completed")
         { rowAction, indexPath in
             print("COMP \(assignment.assignmentIndexID)")
@@ -389,8 +389,8 @@ class AssignmentTableViewController: UITableViewController {
             self.updateAssignmentCell(assignment: assignment, cell: cell)
 
         }
-        completedAction.backgroundColor = Assignment.completedColor
-        if assignment.assignmentStatus.statusCode != Assignment.Graded.statusCode {
+        completedAction.backgroundColor = Assignment.successColor
+        if assignment.assignmentStatus.statusCode != Assignment.Graded.statusCode && assignment.assignmentStatus.statusCode != Assignment.Paused.statusCode {
             return [completedAction, inProgressAction,
                     (assignment.assignmentDue.compare(Date()) == .orderedDescending)
                 ? toDoAction : overdueAction
